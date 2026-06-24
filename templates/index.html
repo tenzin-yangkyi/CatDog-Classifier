@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cat vs Dog AI Classifier</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Font Awesome (IMPORTANT for your upload icon) -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+        <div class="center">
+
+            <h1>
+                Cat vs Dog Classifier
+            </h1>
+
+            <p class="subtitle">
+                Upload an image and let our Convolutional Neural Network
+                identify whether it is a Cat 🐱 or a Dog 🐶 within seconds.
+            </p>
+
+            <form method="POST" enctype="multipart/form-data">
+
+                <div class="upload-box">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <input type="file" name="image" required>
+                </div>
+
+                <button type="submit">
+                    Predict Image
+                </button>
+
+            </form>
+
+            {% if image_file %}
+
+            <div class="result-card">
+                <img src="{{ image_file }}">
+
+                <h2>{{ result }}</h2>
+
+                <p>Confidence: {{ confidence }}%</p>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+</body>
+</html>
