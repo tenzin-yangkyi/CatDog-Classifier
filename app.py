@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import tensorflow as tf
 from tensorflow.keras.utils import load_img, img_to_array  # type: ignore
-from keras.utils import load_img
 import numpy as np
 import os
 
@@ -22,18 +21,17 @@ def predict_image(img_path):
 
     img_array = np.expand_dims(img_array, axis=0)
 
-    img_array = img_array / 255.0
 
-    prediction = model.predict(img_array)
+    prediction = model.predict(img_array, verbose=0)
 
-    confidence = float(prediction[0][0])
+    probability = float(prediction[0][0])
 
-    if confidence > 0.5:
+    if probability >= 0.5:
         label = "Dog"
-        confidence = confidence * 100
+        confidence = probability * 100
     else:
         label = "Cat"
-        confidence = (1-confidence) * 100
+        confidence = (1-probability) * 100
 
     return label, round(confidence,2)
 
