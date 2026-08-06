@@ -1,54 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cat vs Dog AI Classifier</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cat vs Dog AI Classifier</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!-- CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <!-- Font Awesome (IMPORTANT for your upload icon) -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome (IMPORTANT for your upload icon) -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
-        <div class="center">
+<div class="center">
 
-            <h1>
-                Cat vs Dog Classifier
-            </h1>
+    <span class="badge"><i class="fa-solid fa-paw"></i> Neural Network Powered</span>
 
-            <p class="subtitle">
-                Upload an image and let our Convolutional Neural Network
-                identify whether it is a Cat 🐱 or a Dog 🐶 within seconds.
-            </p>
+    <h1>
+        <span class="highlight-cat">Cat</span> <span class="vs">vs</span> <span class="highlight-dog">Dog</span><br>
+        Classifier
+    </h1>
 
-            <form method="POST" enctype="multipart/form-data">
+    <p class="subtitle">
+        Upload an image and let our Convolutional Neural Network
+        identify whether it is a Cat 🐱 or a Dog 🐶 within seconds.
+    </p>
 
-                <div class="upload-box">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <input type="file" name="image" required>
-                </div>
+    <form method="POST" enctype="multipart/form-data" id="uploadForm">
 
-                <button type="submit">
-                    Predict Image
-                </button>
-
-            </form>
-
-            {% if image_file %}
-
-            <div class="result-card">
-                <img src="{{ image_file }}">
-
-                <h2>{{ result }}</h2>
-
-                <p>Confidence: {{ confidence }}%</p>
-            </div>
-
-            {% endif %}
-
+        <div class="upload-box" id="uploadBox">
+            <i class="fa-solid fa-cloud-arrow-up" id="uploadIcon"></i>
+            <span class="upload-text" id="uploadText">Drop an image here or click to browse</span>
+            <input type="file" name="image" id="uploadInput" accept="image/*" required>
         </div>
+
+        <button type="submit">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Predict Image
+        </button>
+
+    </form>
+
+    {% if image_file %}
+
+    <div class="result-card">
+        <div class="result-header">
+            <h2>{{ result }}</h2>
+            <button type="button" class="remove-btn" title="Clear prediction" onclick="window.location = window.location.pathname">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <img src="{{ image_file }}">
+
+        <p>Confidence: {{ confidence }}%</p>
+
+        <button type="button" class="reset-btn" onclick="window.location = window.location.pathname">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+            Predict Another Image
+        </button>
+    </div>
+
+    {% endif %}
+
+</div>
+
+<script>
+    const uploadInput = document.getElementById('uploadInput');
+    const uploadText  = document.getElementById('uploadText');
+    const uploadBox   = document.getElementById('uploadBox');
+    const uploadIcon  = document.getElementById('uploadIcon');
+
+    uploadInput.addEventListener('change', () => {
+        if (uploadInput.files && uploadInput.files.length > 0) {
+            uploadText.textContent = uploadInput.files[0].name;
+            uploadBox.classList.add('has-file');
+            uploadIcon.classList.remove('fa-cloud-arrow-up');
+            uploadIcon.classList.add('fa-file-circle-check');
+        } else {
+            uploadText.textContent = 'Drop an image here or click to browse';
+            uploadBox.classList.remove('has-file');
+            uploadIcon.classList.remove('fa-file-circle-check');
+            uploadIcon.classList.add('fa-cloud-arrow-up');
+        }
+    });
+</script>
 
 </body>
 </html>
